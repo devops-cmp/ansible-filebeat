@@ -11,8 +11,6 @@ filebeat.inputs:
 {% endfor %}
   tags: {{ tags | to_yaml }}
 
-setup.template.enabled: false
-
 output.elasticsearch:
   hosts: {{ elastic_hosts | to_yaml }}
   bulk_max_size: {{ bulk_max_size }}
