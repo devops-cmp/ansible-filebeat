@@ -1,0 +1,3 @@
+---
+# vars file for ansible_filebeat
+bulk_max_size : 50

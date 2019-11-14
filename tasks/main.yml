@@ -1,0 +1,17 @@
+---
+# tasks file for ansible_filebeat
+- name: Install filebeat from elastic url
+  yum:
+    name: "https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-{{ version }}-x86_64.rpm"
+    state: present
+
+- name: Filebeat configuration
+  template:
+    src: templates/filebeat.yml.jinja
+    dest: "/etc/filebeat/filebeat.yml"
+    mode: 0644
+
+- name: Filebeat service enabled
+  systemd:
+    name: filebeat
+    enabled: yes
