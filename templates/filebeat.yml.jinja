@@ -9,7 +9,7 @@ filebeat.inputs:
 {% for path in paths %}
   - {{ path }}
 {% endfor %}
-  tags: {{ tags | to_yaml }}
+  tags: {{ log_tags | to_yaml }}
 
 output.elasticsearch:
   hosts: {{ elastic_hosts | to_yaml }}
