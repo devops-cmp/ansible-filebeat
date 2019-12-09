@@ -8,7 +8,7 @@ Role Variables
 --------------
 
 - version: filebeat version. (by default 7.5.0).
-- pipelinematch: List of tags and list of paths to be parsed by filebeat. Wildcard is allowed.
+- processors: configuration of log handling . Path , tags and input type.
 - elastic_hosts: List of elasticsearch ingress URLs.
 - bulk_max_size: Max number of logs to be sent at the same time. (by default 50)
 
@@ -24,11 +24,18 @@ Example Playbook
       roles:
          - role: devops_cmp.ansible_filebeat
            version: 7.5.0
-           pipelinematch:
-             tags:
-             - ["httpd","httpd-error"]
-             paths:
-             - ["/var/log/httpd","/var/log/httpd/*error*"]
+           processors:
+             - paths: ['/var/log/httpd/*access.log']
+               tags: ['httpd', 'access', 'isprime', '2.2']
+               type: 'log'
+
+             - paths: ['/var/log/httpd/*error.log', 'error_log']
+               tags: ['httpd', 'error', '2.2']
+               type: 'log'
+
+             - host: 'localhost:5514'
+               tags: ['httpd', 'error', '2.2']
+               type: 'udp'
 
            elastic_hosts: ['https://ingest.mycluster.com:443']
            bulk_max_size: 50
