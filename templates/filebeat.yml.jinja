@@ -6,10 +6,18 @@ filebeat.config:
 filebeat.inputs:
 - type: log
   paths:
-{% for path in paths %}
-  - {{ path }}
+{% for paths in pipelinematch.paths %}
+  {% for item in paths %}
+  - {{ item }}
+  {% endfor %}
 {% endfor %}
-  tags: {{ log_tags | to_yaml }}
+
+  tags:
+{% for tags in pipelinematch.tags %}
+  {% for item in tags %}
+  - {{ item }}
+  {% endfor %}
+{% endfor %}
 
 output.elasticsearch:
   hosts: {{ elastic_hosts | to_yaml }}
