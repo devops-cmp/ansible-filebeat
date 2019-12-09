@@ -26,7 +26,7 @@ Example Playbook
            version: 7.5.0
            processors:
              - paths: ['/var/log/httpd/*access.log']
-               tags: ['httpd', 'access', 'isprime', '2.2']
+               tags: ['httpd', 'access', '2.2']
                type: 'log'
 
              - paths: ['/var/log/httpd/*error.log', 'error_log']
