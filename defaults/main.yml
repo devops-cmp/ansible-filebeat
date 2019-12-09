@@ -1,6 +1,6 @@
 ---
 # defaults file for ansible_filebeat
-version: 6.5.4
+version: 7.5.0
 bulk_max_size : 50
 elastic_hosts: []
 pipelinematch: []
