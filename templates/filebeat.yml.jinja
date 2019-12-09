@@ -4,20 +4,7 @@ filebeat.config:
     reload.enabled: false
 
 filebeat.inputs:
-- type: log
-  paths:
-{% for paths in pipelinematch.paths %}
-  {% for item in paths %}
-  - {{ item }}
-  {% endfor %}
-{% endfor %}
-
-  tags:
-{% for tags in pipelinematch.tags %}
-  {% for item in tags %}
-  - {{ item }}
-  {% endfor %}
-{% endfor %}
+{{ processors | to_yaml}}
 
 output.elasticsearch:
   hosts: {{ elastic_hosts | to_yaml }}
