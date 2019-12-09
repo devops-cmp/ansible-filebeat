@@ -26,10 +26,12 @@
   systemd:
     name: filebeat
     enabled: yes
+    state: restarted
   when: ansible_distribution == "CentOS" and ansible_distribution_major_version > '6'
 
 - name: Filebeat service enabled - initid lovers
   service:
     name: filebeat
     enabled: yes
+    state: restarted
   when: ansible_distribution == "CentOS" and ansible_distribution_major_version < '7'
