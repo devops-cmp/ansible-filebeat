@@ -7,11 +7,10 @@ Ansible role to install filebeat with a simple configuration.
 Role Variables
 --------------
 
-- version: filebeat version. (by default 6.5.4)
-- log_tags: List of tags to be added to the logs (by default [])
+- version: filebeat version. (by default 7.5.0).
+- processors: configuration of log handling . Path , tags and input type.
 - elastic_hosts: List of elasticsearch ingress URLs.
 - bulk_max_size: Max number of logs to be sent at the same time. (by default 50)
-- paths: List of all the log paths to be sent. Wildcard is allowed.
 
 Dependencies
 ------------
@@ -23,10 +22,20 @@ Example Playbook
 
     - hosts: servers
       roles:
-         -
-           role: devops_cmp.ansible_filebeat
-           version: 6.5.4
-           log_tags: ['prod', 'myapp', 'mycomponent']
+         - role: devops_cmp.ansible_filebeat
+           version: 7.5.0
+           processors:
+             - paths: ['/var/log/httpd/*access.log']
+               tags: ['httpd', 'access', '2.2']
+               type: 'log'
+
+             - paths: ['/var/log/httpd/*error.log', 'error_log']
+               tags: ['httpd', 'error', '2.2']
+               type: 'log'
+
+             - host: 'localhost:5514'
+               tags: ['httpd', 'error', '2.2']
+               type: 'udp'
+
            elastic_hosts: ['https://ingest.mycluster.com:443']
-           bulk_max_size: 200
-           paths: ['/my/path/tologs/*']
+           bulk_max_size: 50
