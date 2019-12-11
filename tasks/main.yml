@@ -3,35 +3,35 @@
 
 - name: check if filebeat is already installed -get version
   shell: yum list installed | grep filebeat | awk {'print $2'}
-  register: filebeat-installed
+  register: filebeat_installed
 
 - name: uninstall old filebeat package
   yum:
     name: filebeat
     state: absent
-  when: filebeat-installed != version
+  when: version not in filebeat_installed.stdout
 
 - name: Install filebeat from elastic url
   yum:
     name: "https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-{{ version }}-x86_64.rpm"
     state: present
-  when: filebeat-installed != version
+  when: version not in filebeat_installed.stdout
 
 - name: Filebeat configuration
   template:
     src: templates/filebeat.yml.jinja
     dest: "/etc/filebeat/filebeat.yml"
     mode: 0644
-  when: filebeat-installed != version
+  when: version not in filebeat_installed.stdout
 
 - name: Filebeat service enabled - systemd lovers
   systemd:
     name: filebeat
     enabled: yes
-  when: ansible_distribution == "CentOS" and ansible_distribution_major_version > '6' an filebeat-installed != version
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version > '6' and version not in filebeat_installed.stdout
 
 - name: Filebeat service enabled - initid lovers
   service:
     name: filebeat
     enabled: yes
-  when: ansible_distribution == "CentOS" and ansible_distribution_major_version < '7' and filebeat-installed != version
+  when: ansible_distribution == "CentOS" and ansible_distribution_major_version < '7' and version not in filebeat_installed.stdout
