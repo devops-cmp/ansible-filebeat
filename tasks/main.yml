@@ -1,9 +1,8 @@
 ---
 # tasks file for ansible_filebeat
 
-- name: get the rpm package facts
-  package_facts:
-    manager: "auto"
+- name: check if filebeat is already installed -get version
+  shell: yum list installed | grep filebeat | awk {'print $2'}
 
 - name: uninstall old filebeat package
   yum:

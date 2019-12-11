@@ -1,6 +1,6 @@
 ---
 # defaults file for ansible_filebeat
-version: 7.5.0
+version: 7.5.0-1
 bulk_max_size : 50
 elastic_hosts: []
 processors: []
